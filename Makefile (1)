@@ -1,0 +1,17 @@
+obj-m += led_driver.o
+
+# Kernel build
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
+all: led_driver led_app
+
+led_driver:
+	make -C $(KDIR) M=$(PWD) modules
+
+led_app:
+	gcc -o led_app led_app.c
+
+clean:
+	make -C $(KDIR) M=$(PWD) clean
+	rm -f led_app
